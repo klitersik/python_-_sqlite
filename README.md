@@ -1,4 +1,4 @@
-# Create a databse from csv file
+# 1. Create a databse from csv file
 
 ```python
   connection = sqlite3.connect('flights.db')
@@ -17,7 +17,7 @@
   url = "https://bitpeak.pl/datasets/flightlegs.csv"
   flightlegs = pd.read_csv(url)
 ```
-# Insert data into databse
+# 2. Insert data into databse
 
 ```python
   insert_data = "INSERT INTO FlightLeg (id,tailNumber,sourceAirportCode,sourceCountryCode,destinationAirportCode,destinationCountryCode,departureTimeUtc,landingTimeUtc) \
@@ -28,4 +28,17 @@
       data_tuple = (i,data[0],data[1],data[2],data[3],data[4],data[5],data[6])
       cursor.execute(insert_data, data_tuple)
       connection.commit()
+```
+
+# 3. Add new colums to database
+  - flightDuration (duration of flight in minutes)
+  - flightType (value 'D' = domestic) (value 'I' = international)
+```python
+  addColumn_flightDuration = "ALTER TABLE FlightLeg ADD COLUMN flightDuration int"
+  cursor.execute(addColumn_flightDuration)
+  connection.commit()
+  
+  addColumn_flightType = "ALTER TABLE FlightLeg ADD COLUMN flightType CHAR(1)"
+  cursor.execute(addColumn_flightType)
+  connection.commit()
 ```
