@@ -42,3 +42,30 @@
   cursor.execute(addColumn_flightType)
   connection.commit()
 ```
+# 4 Inserting data in new columns
+
+```python
+  update_data = """Update FlightLeg set flightDuration = ? where id = ?"""
+  for i in range(len(flightlegs.index)):
+      string = flightlegs.iloc[i][0]
+      data = string.split(";")
+      date_start = datetime.strptime(data[5], '%Y-%m-%d %H:%M:%S')
+      date_stop = datetime.strptime(data[6], '%Y-%m-%d %H:%M:%S')
+      date_diff = round((date_stop - date_start).total_seconds() / 60)
+      time = (date_diff,i)
+      cursor.execute(update_data, time)
+  connection.commit()
+```
+```python
+  update_data = """Update FlightLeg set flightType = ? where id = ?"""
+  for i in range(len(flightlegs.index)):
+      string = flightlegs.iloc[i][0]
+      data = string.split(";")
+      if data[2] == data[4]:
+          code = "D"
+      else:
+          code = "I"
+      codes = (code,i)
+      cursor.execute(update_data, codes)
+  connection.commit()
+```
