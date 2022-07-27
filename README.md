@@ -17,3 +17,15 @@
   url = "https://bitpeak.pl/datasets/flightlegs.csv"
   flightlegs = pd.read_csv(url)
 ```
+# Insert data into databse
+
+```python
+  insert_data = "INSERT INTO FlightLeg (id,tailNumber,sourceAirportCode,sourceCountryCode,destinationAirportCode,destinationCountryCode,departureTimeUtc,landingTimeUtc) \
+      VALUES (?,?,?,?,?,?,?,? )"
+  for i in range(len(flightlegs.index)):
+      string = flightlegs.iloc[i][0]
+      data = string.split(";")
+      data_tuple = (i,data[0],data[1],data[2],data[3],data[4],data[5],data[6])
+      cursor.execute(insert_data, data_tuple)
+      connection.commit()
+```
